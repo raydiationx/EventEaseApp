@@ -1,0 +1,38 @@
+@page "/eventdetails/{EventId:int}"
+@inject EventService EventService
+@using EventEaseApp.Models
+
+@code {
+    [Parameter]
+    public int EventId { get; set; }
+
+    private Event? eventDetails;
+    private bool isLoading = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        eventDetails = await Task.Run(() => EventService.GetEventById(EventId));
+        isLoading = false;
+    }
+}
+
+<PageTitle>Event Details</PageTitle>
+
+@if (isLoading)
+{
+    <p>Loading...</p>
+}
+else if (eventDetails != null)
+{
+    <div class="card">
+        <div class="card-body">
+            <h3 class="card-title">@eventDetails.EventName</h3>
+            <p class="card-text">Date: @eventDetails.EventDate.ToShortDateString()</p>
+            <p class="card-text">Location: @eventDetails.Location</p>
+        </div>
+    </div>
+}
+else
+{
+    <p>Event not found.</p>
+}
