@@ -1,1 +1,3 @@
 # EventEaseApp
+
+#trying to learn
